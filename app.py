@@ -10,11 +10,11 @@ import json
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = "penguin_secret_key"
+app.secret_key = os.getenv("SECRET_KEY", "penguin-development-key")
 
 # ================= DATABASE =================
 
-database_url = os.getenv("DATABASE_URL")
+database_url = os.getenv("DATABASE_URL", "sqlite:///penguin.db")
 
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace(
@@ -31,7 +31,15 @@ migrate = Migrate(app, db)
 
 # ================= OPENAI =================
 
-client = OpenAI(api_key=os.getenv("api_key"))
+openai_api_key = os.getenv("OPENAI_API_KEY") or os.getenv("api_key")
+client = OpenAI(api_key=openai_api_key) if openai_api_key else None
+
+
+def get_openai_client():
+    """Return the AI client, with a useful error when the key is not configured."""
+    if client is None:
+        raise RuntimeError("OPENAI_API_KEY is not configured")
+    return client
 
 # ================= MODELS =================
 
@@ -53,6 +61,11 @@ class User(db.Model):
 @app.route("/")
 def root():
     return redirect("/login")
+
+
+@app.route("/health")
+def health():
+    return jsonify({"status": "ok"})
 
 # ================= LOGIN =================
 
@@ -115,7 +128,7 @@ def start_language():
 
     try:
 
-        response = client.chat.completions.create(
+        response = get_openai_client().chat.completions.create(
             model="gpt-4o",
             response_format={"type": "json_object"},
             messages=[
@@ -256,7 +269,8 @@ def set_penguin_color():
 @app.route("/penguin_talk", methods=["POST"])
 def penguin_talk():
 
-    response = client.chat.completions.create(
+    try:
+        response = get_openai_client().chat.completions.create(
         model="gpt-4o",
         messages=[
             {
@@ -270,10 +284,13 @@ include English translation.
         ]
     )
 
-    return jsonify({
-        "message":
-        response.choices[0].message.content
-    })
+        return jsonify({
+            "message":
+            response.choices[0].message.content
+        })
+    except Exception as e:
+        print("Penguin talk error:", e)
+        return jsonify({"error": "AI is not configured"}), 503
 
 @app.route("/start_conversation", methods=["POST"])
 def start_conversation():
@@ -295,7 +312,7 @@ def start_conversation():
 
     try:
 
-        response = client.chat.completions.create(
+        response = get_openai_client().chat.completions.create(
             model="gpt-4o",
             response_format={"type": "json_object"},
             messages=[
@@ -351,7 +368,7 @@ def submit_conversation():
 
             user_answer = answers[i] if i < len(answers) else ""
 
-            response = client.chat.completions.create(
+            response = get_openai_client().chat.completions.create(
                 model="gpt-4o",
                 response_format={"type": "json_object"},
                 messages=[
@@ -448,6 +465,10 @@ def conversation():
 @app.route("/flappy")
 def flappy():
     return render_template("flappy.html")
+
+
+with app.app_context():
+    db.create_all()
 
 
 # ================= RUN =================

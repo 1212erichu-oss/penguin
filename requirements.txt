@@ -1,7 +1,7 @@
-Flask
-Flask-SQLAlchemy
-Flask-Migrate
-psycopg2-binary
-gunicorn
-python-dotenv
-openai
+Flask>=3.0,<4
+Flask-SQLAlchemy>=3.1,<4
+Flask-Migrate>=4.0,<5
+psycopg2-binary>=2.9,<3
+gunicorn>=22,<24
+python-dotenv>=1.0,<2
+openai>=1.0,<2
