@@ -1,0 +1,5 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Penguin Home</title><link rel="stylesheet" href="style.css"></head>
+<body><h1>🐧 Penguin Learning</h1><h2>Welcome, <span id="name"></span>!</h2><div class="menu">
+<a href="conversation.html"><button>🗣️ Conversation Mode</button></a><a href="language.html"><button>🌎 Language Game</button></a><a href="flappy.html"><button>🐧 Flappy Penguins</button></a><a href="leaderboard.html"><button>🏆 Leaderboard</button></a><a href="penguin.html"><button>🐧 My Penguin</button></a><button id="logout">Logout</button>
+</div><script src="app.js"></script><script>const user = requireUser(); if (user) document.getElementById("name").textContent = user.username; document.getElementById("logout").onclick = logout;</script></body></html>

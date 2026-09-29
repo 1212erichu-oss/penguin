@@ -1,22 +1,23 @@
 # Penguin Learning
 
-Penguin is a Flask web app with server-side sessions, a SQL database, and OpenAI-powered language activities.
+This repository includes a GitHub Pages-only version in `docs/`.
 
-## Important: GitHub Pages is not the app host
+## GitHub Pages version
 
-GitHub Pages only hosts static files. It cannot run `app.py`, Flask routes, sessions, a database, or the OpenAI API. The app must be deployed to a Python-capable host such as Render. GitHub Pages can only host a separate static frontend, and the OpenAI key must never be placed in browser JavaScript.
+The static version does not need Flask, Python, a database, or an API key. It uses built-in language exercises and saves the username, XP, penguin color, and leaderboard data in the browser's `localStorage`.
 
-## Deploy on Render
+Because GitHub Pages is static hosting, data is local to each browser. Users do not share one leaderboard, and the OpenAI-powered question generation from the original Flask version is not included.
 
-1. Create a new Render Blueprint from this repository.
-2. Set `OPENAI_API_KEY` to your OpenAI API key when prompted.
-3. Render will create the web service and PostgreSQL database from `render.yaml`.
-4. Open the web service URL. The health check is available at `/health`.
+## Publish it on GitHub Pages
 
-For local development, install the packages in `requirements.txt`, set `OPENAI_API_KEY`, and run:
+1. Commit and push the changes to GitHub.
+2. Open the repository's **Settings → Pages**.
+3. Under **Build and deployment**, choose **Deploy from a branch**.
+4. Choose the `main` branch and the `/docs` folder.
+5. Save and open the Pages URL after GitHub finishes deploying.
 
-```text
-python app.py
-```
+The site starts at `docs/index.html`, which is the login page.
 
-Without an OpenAI key, the login and static pages can still load, but AI activities return a configuration error.
+## Original Flask version
+
+The original server-backed version remains in `app.py` and `templates/`. It requires a Python host, a database, and an OpenAI API key. It cannot run directly on GitHub Pages.

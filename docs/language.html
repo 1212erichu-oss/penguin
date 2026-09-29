@@ -1,0 +1,8 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Language Learning</title><link rel="stylesheet" href="style.css"></head>
+<body><h1>🌎 Language Learning Game</h1><div class="card"><input id="language" placeholder="Spanish, French, or Japanese"><select id="difficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select><button id="start">Start Game</button></div><div id="questions" class="card"></div><button id="submit">Submit Answers</button><p id="result"></p><a href="home.html"><button>🏠 Home</button></a><a href="leaderboard.html"><button>🏆 Leaderboard</button></a>
+<script src="app.js"></script><script>
+requireUser(); let questions = [];
+document.getElementById("start").onclick = () => { const typed = document.getElementById("language").value.trim(); const key = Object.keys(questionBank).find(k => k.toLowerCase() === typed.toLowerCase()) || "Spanish"; questions = questionBank[key]; document.getElementById("questions").innerHTML = questions.map((q,i) => `<div class="question"><b>${i+1}. ${q.question}</b>${q.options.map((o,j) => `<label><br><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join("")}</div>`).join(""); };
+document.getElementById("submit").onclick = () => { if (!questions.length) return; let correct = 0; questions.forEach((q,i) => { const selected = document.querySelector(`input[name="q${i}"]:checked`); if (selected && Number(selected.value) === q.answer) correct++; }); const user = getUser(); user.score += correct; user.xp += correct; user.level = Math.floor(user.xp / 20) + 1; saveUser(user); document.getElementById("result").textContent = `You got ${correct}/${questions.length} correct and earned ${correct} XP!`; };
+</script></body></html>
