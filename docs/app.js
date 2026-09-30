@@ -37,6 +37,17 @@ function requireUser() {
   return getUser();
 }
 function logout() { localStorage.removeItem("penguin_username"); window.location.href = "index.html"; }
+function setUsername(name) {
+  const clean = name.trim().slice(0, 30);
+  if (!clean) return;
+  const old = getUser();
+  const existing = getUser(clean);
+  existing.score = Math.max(existing.score, old ? old.score : 0);
+  existing.xp = Math.max(existing.xp, old ? old.xp : 0);
+  existing.level = Math.floor(existing.xp / 20) + 1;
+  if (old && old.color) existing.color = old.color;
+  saveUser(existing);
+}
 function allUsers() {
   return Object.keys(localStorage).filter(k => k.startsWith("penguin_user_")).map(k => JSON.parse(localStorage.getItem(k)));
 }

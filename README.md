@@ -1,12 +1,8 @@
 # Penguin Learning
 
-This repository includes a GitHub Pages-only version in `docs/`.
+Penguin Learning is a browser-based language practice game with conversation exercises, vocabulary quizzes, penguin customization, and a flappy penguin mini-game.
 
-## GitHub Pages version
-
-The static version does not need Flask, Python, a database, or an API key. It uses built-in language exercises and saves the username, XP, penguin color, and leaderboard data in the browser's `localStorage`.
-
-Because GitHub Pages is static hosting, data is local to each browser. Users do not share one leaderboard, and the OpenAI-powered question generation from the original Flask version is not included.
+The site is self-contained and uses built-in exercises. Progress is saved in the browser, so each browser has its own profile and leaderboard.
 
 ## Publish it on GitHub Pages
 
@@ -17,7 +13,3 @@ Because GitHub Pages is static hosting, data is local to each browser. Users do 
 5. Save and open the Pages URL after GitHub finishes deploying.
 
 The site starts at `docs/index.html`, which is the login page.
-
-## Original Flask version
-
-The original server-backed version remains in `app.py` and `templates/`. It requires a Python host, a database, and an OpenAI API key. It cannot run directly on GitHub Pages.

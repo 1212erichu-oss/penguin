@@ -1,7 +1,19 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Penguin Login</title><link rel="stylesheet" href="style.css"></head>
-<body><h1>🐧 Penguin Learning</h1><div class="card"><p>This static version saves progress in this browser.</p>
-<form id="loginForm"><input id="username" required maxlength="30" placeholder="Choose a username"><button>Enter</button></form></div>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Penguin Learning</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<header class="topbar"><a class="brand" href="index.html">🐧 Penguin Learning</a><nav><a href="leaderboard.html">Leaderboard</a><a href="penguin.html">My Penguin</a></nav></header>
+<main>
+<section class="hero"><h1>Learn a little.<br>Have fun a lot.</h1><p>Friendly language practice, conversation challenges, and a tiny penguin adventure.</p></section>
+<section class="card welcome-card"><h2>Welcome, <span id="name"></span>!</h2><p>Choose an activity to get started.</p><label>Display name <input id="nameInput" maxlength="30"></label><button id="saveName">Save</button></section>
+<section class="menu">
+<a href="conversation.html"><button>🗣️<br>Conversation Mode</button></a><a href="language.html"><button>🌎<br>Language Game</button></a><a href="flappy.html"><button>🐧<br>Flappy Penguins</button></a><a href="leaderboard.html"><button>🏆<br>Leaderboard</button></a><a href="penguin.html"><button>🎨<br>My Penguin</button></a><button id="logout">Log out</button>
+</section>
+</main>
 <script src="app.js"></script><script>
-document.getElementById("loginForm").addEventListener("submit", event => { event.preventDefault(); const name = document.getElementById("username").value.trim(); if (!name) return; const user = getUser(name); saveUser(user); window.location.href = "home.html"; });
+if (!currentUser()) saveUser(getUser("Penguin Player"));
+let user = getUser();
+const name = document.getElementById("name"); const input = document.getElementById("nameInput");
+name.textContent = user.username; input.value = user.username;
+document.getElementById("saveName").onclick = () => { setUsername(input.value); user = getUser(); name.textContent = user.username; input.value = user.username; };
+document.getElementById("logout").onclick = logout;
 </script></body></html>
